@@ -1,11 +1,14 @@
 public class CaesarCipher {
 
+    // Assignment to simulate the Caesar Cypher, given a key and message
     static final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static void main(String[] args) {
+        int key = 23;
         String secret = "JESSICA IS BEING ATTACKED BY MINA THE BRAVE";
-        String encryptedMessage = encrypt(secret, 23);
+        String encryptedMessage = encrypt(secret, key);
         System.out.println("Original Message: " + secret);
-        System.out.println(encryptedMessage);
+        System.out.println("Encrypted Message: " + encryptedMessage);
+        System.out.println("Decrypted Message: " + elegantSolution(encryptedMessage, 26-key));
 
     }
 
@@ -26,6 +29,27 @@ public class CaesarCipher {
             encryptedLetter = shiftedAlphabet.charAt(indexOfLetterInAlphabet);
             encryptedMessage.append(encryptedLetter);
         }
-        return "Encrypted Message: " + encryptedMessage.toString();
+        return encryptedMessage.toString();
+    }
+
+    // Second attempt, refined
+    public static String elegantSolution(String messageToEncrypt, int key) {
+        StringBuilder encryptedMessage = new StringBuilder(messageToEncrypt);
+        String shiftedAlphabet = alphabet.substring(key) + alphabet.substring(0, key);
+
+        for (int i=0; i < encryptedMessage.length(); i++) {
+            // Look at the current character
+            char currChar = encryptedMessage.charAt(i);
+            // Find the index of currChar in the alphabet
+            int index = alphabet.indexOf(currChar);
+            // If current character is in the alphabet
+            if (index != -1) {
+                // Get the character at the found index in the shifted alphabet
+                char newChar = shiftedAlphabet.charAt(index);
+                //Replace the current character of encrypted with the new char
+                encryptedMessage.setCharAt(i, newChar);
+            }
+        }
+        return encryptedMessage.toString();
     }
 }
